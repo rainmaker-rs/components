@@ -37,3 +37,6 @@ heapless = "0.8.0"
 embedded-svc = { version = "0.28.0", default-features = false }
 esp-idf-svc = { version = "0.49.1", default-features = false, features = ["alloc"] }
 esp32-nimble = "0.8.0"
+
+[build-dependencies]
+cc = "=1.1.31"
