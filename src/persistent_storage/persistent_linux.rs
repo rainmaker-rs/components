@@ -56,6 +56,10 @@ impl Nvs<PickleDb> {
         Ok(self.0.set(key, &data)?)
     }
 
+    pub fn set_u16(&mut self, key: &str, data: u16) -> Result<(), Error> {
+        Ok(self.0.set(key, &data)?)
+    }
+
     pub fn set_bytes(&mut self, key: &str, bytes: &[u8]) -> Result<(), Error> {
         Ok(self.0.set(key, &bytes)?)
     }
@@ -66,6 +70,10 @@ impl Nvs<PickleDb> {
 
     pub fn get_u8(&self, key: &str) -> Option<u8> {
         self.0.get::<u8>(key)
+    }
+
+    pub fn get_u16(&self, key: &str) -> Option<u16> {
+        self.0.get::<u16>(key)
     }
 
     pub fn get_bytes(&self, key: &str, buff: &mut [u8]) -> Result<Option<Vec<u8>>, Error> {

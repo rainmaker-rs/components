@@ -28,6 +28,11 @@ impl Nvs<EspNvs<NvsCustom>> {
         Ok(())
     }
 
+    pub fn set_u16(&mut self, name: &str, data: u16) -> Result<(), Error> {
+        self.0.set_u16(name, data)?;
+        Ok(())
+    }
+
     pub fn set_bytes(&mut self, name: &str, bytes: &[u8]) -> Result<(), Error> {
         self.0.set_blob(name, bytes)?;
         Ok(())
@@ -40,6 +45,10 @@ impl Nvs<EspNvs<NvsCustom>> {
 
     pub fn get_u8(&self, key: &str) -> Result<Option<u8>, Error> {
         self.0.get_u8(key).map_err(|x| x.into())
+    }
+
+    pub fn get_u16(&self, key: &str) -> Result<Option<u16>, Error> {
+        self.0.get_u16(key).map_err(|x| x.into())
     }
 
     pub fn get_bytes(&self, name: &str, buff: &mut [u8]) -> Result<Option<Vec<u8>>, Error> {
