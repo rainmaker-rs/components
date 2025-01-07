@@ -123,6 +123,17 @@ impl WiFiProvMgrSoftAp {
         let transport = WiFiProvTransportSoftAp::new(config, sec, wifi.clone());
         Self::new_with_transport(wifi, nvs_partition, sec_ver, pop, transport)
     }
+
+    pub fn reset_wifi_provisioning(nvs_partition: NvsPartition) -> Result<(), Error> {
+        let mut nvs = Nvs::new(nvs_partition, WIFI_NAMESPACE)?;
+        let mut buff = [0; 64];
+        if let Some(_) = nvs.get_string(WIFI_SSID_KEY, &mut buff).unwrap() {
+            nvs.remove(WIFI_SSID_KEY)?;
+            nvs.remove(WIFI_PASS_KEY)?;
+        }
+
+        Ok(())
+    }
 }
 
 impl WiFiProvMgrBle {
