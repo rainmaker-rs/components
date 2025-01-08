@@ -147,6 +147,24 @@ impl WiFiProvMgrBle {
         let transport = WiFiProvTransportBle::new(config, sec);
         Self::new_with_transport(wifi, nvs_partition, sec_ver, pop, transport)
     }
+
+    /// Checkes if device is already provisioned.
+    /// If provisioned, it returns the SSID and Password of provisioned WiFi network.
+    pub fn is_provisioned(nvs_partition: NvsPartition) -> Option<(String, String)> {
+        let nvs = Nvs::new(nvs_partition, WIFI_NAMESPACE).expect("Unable to open NVS partition");
+        let mut buff = [0; 64];
+        let ssid = nvs
+            .get_string(WIFI_SSID_KEY, &mut buff)
+            .expect("Unable to get SSID");
+        let password = nvs
+            .get_string(WIFI_PASS_KEY, &mut buff)
+            .expect("Unable to get Password");
+
+        if let (Some(ssid), Some(password)) = (ssid, password) {
+            return Some((ssid, password));
+        }
+        None
+    }
 }
 
 impl<T: WiFiProvTransportTrait> WifiProvMgr<T> {
@@ -175,25 +193,6 @@ impl<T: WiFiProvTransportTrait> WifiProvMgr<T> {
         wifi.start().unwrap();
 
         Ok(())
-    }
-
-    /// Checkes if device is already provisioned.
-    /// If provisioned, it returns the SSID and Password of provisioned WiFi network.
-    pub fn is_provisioned(&self) -> Option<(String, String)> {
-        let partition = self.shared.lock().unwrap().nvs_partition.clone();
-        let nvs = Nvs::new(partition, WIFI_NAMESPACE).expect("Unable to open NVS partition");
-        let mut buff = [0; 64];
-        let ssid = nvs
-            .get_string(WIFI_SSID_KEY, &mut buff)
-            .expect("Unable to get SSID");
-        let password = nvs
-            .get_string(WIFI_PASS_KEY, &mut buff)
-            .expect("Unable to get Password");
-
-        if let (Some(ssid), Some(password)) = (ssid, password) {
-            return Some((ssid, password));
-        }
-        None
     }
 
     fn new_with_transport(
