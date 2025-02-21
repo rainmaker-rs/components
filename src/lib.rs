@@ -4,6 +4,7 @@
 pub mod ble;
 pub mod error;
 pub mod http;
+pub mod local_ctrl;
 pub mod mqtt;
 pub mod persistent_storage;
 pub mod protocomm;

@@ -469,7 +469,6 @@ impl MessageWrite for LocalCtrlMessage {
             
 pub mod mod_LocalCtrlMessage {
 
-use alloc::vec::Vec;
 use super::*;
 
 #[derive(Debug, PartialEq, Clone)]
