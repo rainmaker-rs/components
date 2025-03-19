@@ -179,8 +179,9 @@ impl SecurityTrait for Sec1 {
 
     fn encrypt(&self, input: &mut [u8]) {
         let mut data = self.sec_data.lock().unwrap();
-        let cipher = data.cipher.as_mut().unwrap();
-        cipher.apply_keystream(input);
+        if let Some(cipher) = data.cipher.as_mut() {
+            cipher.apply_keystream(input);
+        }
     }
 
     fn decrypt(&self, input: &mut [u8]) {

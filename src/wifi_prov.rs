@@ -339,7 +339,11 @@ mod ep_prov_scan {
             }
             other => {
                 log::error!("Invalid payload type {:?}", other);
-                return vec![];
+
+                resp.status = Status::InvalidProto;
+                resp.write_message(&mut writer).unwrap();
+                return out_payload;
+
             }
         };
 
